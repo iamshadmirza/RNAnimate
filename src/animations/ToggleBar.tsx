@@ -1,14 +1,9 @@
-import Animated, {
-  useSharedValue,
-  withTiming,
-  useAnimatedStyle,
-  Easing,
-} from 'react-native-reanimated';
-import {View, Text, Button, StyleSheet} from 'react-native';
+import Animated, { useSharedValue, withTiming, useAnimatedStyle, Easing } from 'react-native-reanimated';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import React from 'react';
 
 // Copied example from reanimated docs
-export default function ToggleBar() {
+export default function ToggleBar(): JSX.Element {
   const randomWidth = useSharedValue(10);
 
   const config = {
@@ -16,11 +11,9 @@ export default function ToggleBar() {
     easing: Easing.bezier(0.5, 0.01, 0, 1),
   };
 
-  const style = useAnimatedStyle(() => {
-    return {
-      width: withTiming(randomWidth.value, config),
-    };
-  });
+  const style = useAnimatedStyle(() => ({
+    width: withTiming(randomWidth.value, config),
+  }));
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,4 @@
-type RootStackParamList = {
+export type RootStackParamList = {
   Home: undefined;
   ToggleBar: undefined;
 };

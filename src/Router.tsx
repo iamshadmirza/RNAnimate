@@ -1,12 +1,13 @@
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import ToggleBar from './animations/ToggleBar';
 import AnimationListing from './AnimationListing';
+import { RootStackParamList } from './types/RootNavigator';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-function Router() {
+function Router(): JSX.Element {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">

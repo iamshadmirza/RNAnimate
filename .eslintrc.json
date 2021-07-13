@@ -1,0 +1,53 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "import/no-unresolved": 0,
+    "import/prefer-default-export": 0,
+    "no-underscore-dangle": 0,
+    "react/jsx-filename-extension": [1, {
+      "extensions": [
+        ".ts",
+        ".tsx",
+        ".jsx",
+        ".js"
+      ]
+    }],
+    "prettier/prettier": [
+      "error",
+      {
+        "bracketSpacing": true,
+        "singleQuote": true,
+        "trailingComma": "all",
+        "arrowParens": "avoid",
+        "endOfLine": "auto",
+        "jsxBracketSameLine": true,
+        "tabWidth": 2,
+        "printWidth": 120
+      }
+    ],
+    "no-use-before-define": "off",
+    // "@typescript-eslint/no-use-before-define": ["error"],
+    "import/no-extraneous-dependencies": 0,
+    "import/extensions": ["error", "never"],
+    "react/prop-types": 0,
+    "react/jsx-props-no-spreading": 0,
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"]
+  }
+}
