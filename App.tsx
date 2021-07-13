@@ -3,9 +3,9 @@ import Animated, {
   withTiming,
   useAnimatedStyle,
   Easing,
-} from 'react-native-reanimated';
-import {View, Text, Button, StyleSheet} from 'react-native';
-import React from 'react';
+} from "react-native-reanimated";
+import { View, Text, Button, StyleSheet } from "react-native";
+import React from "react";
 
 export default function AnimatedStyleUpdateExample() {
   const randomWidth = useSharedValue(10);
@@ -38,19 +38,19 @@ export default function AnimatedStyleUpdateExample() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
   },
   bar: {
     width: 100,
     height: 80,
-    backgroundColor: 'black',
+    backgroundColor: "black",
     margin: 30,
   },
   text: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
     marginBottom: 20,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 });
