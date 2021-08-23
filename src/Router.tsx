@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import ToggleBar from './animations/ToggleBar';
-import AnimationListing from './AnimationListing';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types/RootNavigator';
+import { AnimationListing } from './AnimationListing';
+import { ToggleBar, HoldAndDrag } from './animations';
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function Router(): JSX.Element {
   return (
@@ -13,6 +13,7 @@ function Router(): JSX.Element {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={AnimationListing} />
         <Stack.Screen name="ToggleBar" component={ToggleBar} />
+        <Stack.Screen name="HoldAndDrag" component={HoldAndDrag} />
       </Stack.Navigator>
     </NavigationContainer>
   );

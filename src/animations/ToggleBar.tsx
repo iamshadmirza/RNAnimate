@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import React from 'react';
 
 // Copied example from reanimated docs
-export default function ToggleBar(): JSX.Element {
+export const ToggleBar = (): JSX.Element => {
   const randomWidth = useSharedValue(10);
 
   const config = {
@@ -27,7 +27,7 @@ export default function ToggleBar(): JSX.Element {
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

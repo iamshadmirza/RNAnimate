@@ -1,9 +1,9 @@
 import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Text, Pressable, StyleSheet, FlatList } from 'react-native';
 import { RootStackParamList } from './types/RootNavigator';
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
+type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 type Props = {
   navigation: HomeScreenNavigationProp;
@@ -19,9 +19,13 @@ const animations: Array<Animation> = [
     path: 'ToggleBar',
     title: 'Toggle Bar (Docs example)',
   },
+  {
+    path: 'HoldAndDrag',
+    title: 'Floating Heads',
+  },
 ];
 
-const AnimationListing = ({ navigation }: Props): JSX.Element => (
+export const AnimationListing = ({ navigation }: Props): JSX.Element => (
   <FlatList
     data={animations}
     keyExtractor={(item, index) => item.path + index}
@@ -56,5 +60,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-
-export default AnimationListing;
