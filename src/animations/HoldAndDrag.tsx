@@ -7,7 +7,7 @@ import Animated, {
   withDecay,
 } from 'react-native-reanimated';
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
-import { clamp } from 'react-native-redash';
+import { clamp, withBouncing } from 'react-native-redash';
 
 const HEAD_WIDTH = 100;
 
@@ -34,14 +34,22 @@ export const HoldAndDrag = (): JSX.Element => {
         translateY.value = clamp(event.translationY + ctx.offsetY, 0, boundY);
       },
       onEnd: (event, ctx) => {
-        translateX.value = withDecay({
-          velocity: event.velocityX,
-          clamp: [0, boundX],
-        });
-        translateY.value = withDecay({
-          velocity: event.velocityY,
-          clamp: [0, boundY],
-        });
+        translateX.value = withBouncing(
+          withDecay({
+            velocity: event.velocityX,
+            clamp: [0, boundX],
+          }),
+          0,
+          boundX,
+        );
+        translateY.value = withBouncing(
+          withDecay({
+            velocity: event.velocityY,
+            clamp: [0, boundY],
+          }),
+          0,
+          boundY,
+        );
       },
     },
   );
