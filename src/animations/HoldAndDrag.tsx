@@ -33,7 +33,7 @@ export const HoldAndDrag = (): JSX.Element => {
         translateX.value = clamp(event.translationX + ctx.offsetX, 0, boundX);
         translateY.value = clamp(event.translationY + ctx.offsetY, 0, boundY);
       },
-      onEnd: (event, ctx) => {
+      onEnd: event => {
         translateX.value = withBouncing(
           withDecay({
             velocity: event.velocityX,

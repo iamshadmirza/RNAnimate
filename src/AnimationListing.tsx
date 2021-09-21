@@ -20,8 +20,12 @@ const animations: Array<Animation> = [
     title: 'Toggle Bar (Docs example)',
   },
   {
+    path: 'CollapsibleHeader',
+    title: 'Collapsible Header like Whatsapp',
+  },
+  {
     path: 'HoldAndDrag',
-    title: 'Floating Heads',
+    title: 'Draggable Head',
   },
 ];
 
