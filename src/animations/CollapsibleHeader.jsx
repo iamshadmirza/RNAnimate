@@ -1,178 +1,119 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from 'react';
-import { View, Text, Animated, useWindowDimensions } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { TabView, TabBar } from 'react-native-tab-view';
+import { View, Text, StyleSheet, Platform, Animated } from 'react-native';
+import faker from 'faker';
+import { createMaterialTopTabNavigator, MaterialTopTabBar } from '@react-navigation/material-top-tabs';
+import { colors } from '../utils/Constant';
 
-const HEADER_HEIGHT = 56;
+const Tab = createMaterialTopTabNavigator();
 
-const LIST_CONTENT = Array.from(Array(20)).map(() => ({
-  name: 'Something',
-  brief:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud',
+const HEADER_HEIGHT = 50;
+
+const dataArray = Array.from(Array(20)).map(() => ({
+  key: faker.datatype.uuid(),
+  name: faker.name.firstName(),
+  message: faker.random.words(),
 }));
 
-const ListContent = ({ isActive, scrollY }) => {
-  const translateY = scrollY.interpolate({
-    inputRange: [0, 50],
-    outputRange: [-50, 0],
-    extrapolate: 'clamp',
-  });
+const Item = ({ data }) => {
+  return (
+    <View style={styles.chatContainer}>
+      <Text style={styles.chatUser}>{data.name}</Text>
+      <Text>{data.message}</Text>
+    </View>
+  );
+};
+
+const Screen = ({ scrollY }) => {
   return (
     <Animated.FlatList
-      style={{ transform: [{ translateY }], paddingTop: 50 }}
-      data={LIST_CONTENT}
-      keyExtractor={(item, i) => i.toString()}
+      contentContainerStyle={styles.contentContainerStyle}
+      contentInset={Platform.select({ ios: { top: 50 } })}
+      contentOffset={Platform.select({
+        ios: { x: 0, y: -HEADER_HEIGHT },
+      })}
+      data={dataArray}
+      keyExtractor={item => item.key}
+      renderItem={({ item }) => <Item data={item} />}
       scrollEventThrottle={16}
       onScroll={
-        isActive && Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })
+        scrollY &&
+        Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+          useNativeDriver: true,
+        })
       }
-      renderItem={({ item }) => (
-        <View style={{ margin: 10, borderWidth: 1, padding: 10, borderRadius: 5 }}>
-          <Text style={{ fontWeight: '700' }}>{item.name}</Text>
-          <Text>{item.brief}</Text>
-        </View>
-      )}
     />
   );
 };
 
-const Header = ({ scrollY }) => {
-  const translateY = scrollY.interpolate({
-    inputRange: [0, 50],
-    outputRange: [0, -50],
+const AnimatedHeader = ({ scrollY, ...props }) => {
+  const clampedScrollY = scrollY.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+    extrapolateLeft: 'clamp',
+  });
+  const diffClampScrollY = Animated.diffClamp(clampedScrollY, 0, HEADER_HEIGHT);
+  const translateY = diffClampScrollY.interpolate({
+    inputRange: [0, HEADER_HEIGHT],
+    outputRange: [0, -HEADER_HEIGHT],
     extrapolate: 'clamp',
   });
   return (
-    <Animated.View
-      style={{
-        height: HEADER_HEIGHT,
-        backgroundColor: '#075e54',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        transform: [{ translateY }],
-      }}>
-      <Text
-        style={{
-          fontSize: 20,
-          color: 'white',
-          paddingLeft: 10,
-        }}>
-        Whatsapp
-      </Text>
+    <Animated.View style={[styles.header, { transform: [{ translateY }] }]}>
+      <MaterialTopTabBar {...props} />
     </Animated.View>
   );
 };
 
-export const CollapsibleHeader = ({ navigation }) => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const CollapsibleHeader = () => {
   const scrollY = React.useRef(new Animated.Value(0)).current;
-  const layout = useWindowDimensions();
-  React.useEffect(() => {
-    navigation.setOptions({
-      headerStyle: {
-        backgroundColor: '#075e54',
-      },
-      headerTitleStyle: {
-        color: 'white',
-      },
-      headerTintColor: 'white',
-    });
-  }, [navigation]);
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'chats', title: 'Chats' },
-    { key: 'stories', title: 'Stories' },
-    { key: 'calls', title: 'Calls' },
-  ]);
-
-  const renderScene = React.useCallback(
-    ({ route }) => {
-      switch (route.key) {
-        case 'chats':
-          return <ListContent isActive={routes[index].key === route.key} scrollY={scrollY} />;
-        case 'stories':
-          return <ListContent isActive={routes[index].key === route.key} scrollY={scrollY} />;
-        case 'calls':
-          return <ListContent isActive={routes[index].key === route.key} scrollY={scrollY} />;
-        default:
-          return null;
-      }
-    },
-    [index, routes, scrollY],
-  );
-
-  const renderTabBar = React.useCallback(
-    props => {
-      const translateY = scrollY.interpolate({
-        inputRange: [0, HEADER_HEIGHT],
-        outputRange: [0, -HEADER_HEIGHT],
-        extrapolate: 'clamp',
-      });
-
-      const opacity = scrollY.interpolate({
-        inputRange: [HEADER_HEIGHT, HEADER_HEIGHT + 20],
-        outputRange: [0, 1],
-        extrapolateRight: 'clamp',
-      });
-
-      const renderItem =
-        ({ navigationState, position }) =>
-        ({ route }) => {
-          return (
-            <Animated.View
-              style={[
-                {
-                  width: '100%',
-                  zIndex: 10,
-                  height: HEADER_HEIGHT,
-                  backgroundColor: '#075e54',
-                  transform: [{ translateY }],
-                },
-              ]}>
-              <Text>{route.title}</Text>
-              <Animated.View>
-                <View
-                  style={{
-                    height: 1,
-                    backgroundColor: '#eee',
-                  }}
-                />
-              </Animated.View>
-            </Animated.View>
-          );
-        };
-
-      return (
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            backgroundColor: '#fafafa',
-          }}>
-          {props.navigationState.routes.map((route, i) => {
-            return (
-              <TouchableWithoutFeedback key={route.key} onPress={() => props.jumpTo(route.key)}>
-                {renderItem(props)({ route, index: i })}
-              </TouchableWithoutFeedback>
-            );
-          })}
-        </View>
-      );
-    },
-    [scrollY],
-  );
-
   return (
-    <>
-      <Header scrollY={scrollY} />
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        renderTabBar={renderTabBar}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-      />
-    </>
+    <Tab.Navigator
+      tabBar={props => <AnimatedHeader {...props} scrollY={scrollY} />}
+      screenOptions={{
+        tabBarActiveTintColor: '#fff',
+        tabBarItemStyle: {
+          backgroundColor: colors.whatsapp,
+          height: HEADER_HEIGHT,
+        },
+        tabBarLabelStyle: {
+          fontWeight: 'bold',
+        },
+        tabBarStyle: {
+          height: HEADER_HEIGHT,
+        },
+      }}>
+      <Tab.Screen name="Chats">{props => <Screen {...props} scrollY={scrollY} />}</Tab.Screen>
+      <Tab.Screen name="Status">{props => <Screen {...props} scrollY={scrollY} />}</Tab.Screen>
+      <Tab.Screen name="Calls">{props => <Screen {...props} scrollY={scrollY} />}</Tab.Screen>
+    </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+  },
+  contentContainerStyle: Platform.select({
+    ios: { flexGrow: 1, paddingBottom: HEADER_HEIGHT },
+    android: {
+      flexGrow: 1,
+      paddingTop: HEADER_HEIGHT,
+      paddingBottom: HEADER_HEIGHT,
+    },
+  }),
+  chatContainer: {
+    borderRadius: 5,
+    borderWidth: StyleSheet.hairlineWidth,
+    margin: 10,
+    padding: 10,
+  },
+  chatUser: {
+    fontSize: 17,
+    fontWeight: '600',
+  },
+});
