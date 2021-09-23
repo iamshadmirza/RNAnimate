@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import React from 'react';
-import { Animated, FlatList, SafeAreaView, StatusBar } from 'react-native';
+import { Animated, FlatList, SafeAreaView, StatusBar, Platform } from 'react-native';
 import { colors, size } from '../../utils/Constant';
 import AnimatedHeader from './AnimatedHeader';
 import Screen from './Screen';
@@ -10,7 +10,7 @@ export type tabKeys = 'chats' | 'status' | 'calls';
 
 const Tab = createMaterialTopTabNavigator();
 
-const animatedTabSceneOffset = 0;
+export const CBTabViewOffset = Platform.OS === 'ios' ? -size.headerHeight : 0;
 
 const MainContainer = (): JSX.Element => {
   const scrollY = React.useRef(new Animated.Value(0)).current;
@@ -42,23 +42,23 @@ const MainContainer = (): JSX.Element => {
         return;
       }
 
-      if (scrollValue <= animatedTabSceneOffset + size.headerHeight) {
+      if (scrollValue <= CBTabViewOffset + size.headerHeight) {
         /* header visible */
         scrollRef.scrollToOffset({
-          offset: Math.max(Math.min(scrollValue, animatedTabSceneOffset + size.headerHeight), animatedTabSceneOffset),
+          offset: Math.max(Math.min(scrollValue, CBTabViewOffset + size.headerHeight), CBTabViewOffset),
           animated: false,
         });
         tabkeyToScrollPosition[key] = scrollValue;
       } else if (
-        tabkeyToScrollPosition[key] < animatedTabSceneOffset + size.headerHeight ||
+        tabkeyToScrollPosition[key] < CBTabViewOffset + size.headerHeight ||
         tabkeyToScrollPosition[key] == null
       ) {
         /* header hidden */
         scrollRef.scrollToOffset({
-          offset: animatedTabSceneOffset + size.headerHeight,
+          offset: CBTabViewOffset + size.headerHeight,
           animated: false,
         });
-        tabkeyToScrollPosition[key] = animatedTabSceneOffset + size.headerHeight;
+        tabkeyToScrollPosition[key] = CBTabViewOffset + size.headerHeight;
       }
     });
   };
