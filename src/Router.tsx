@@ -18,9 +18,7 @@ function Router(): JSX.Element {
           name="CollapsibleHeader"
           component={CollapsibleHeader}
           options={{
-            headerStyle: { backgroundColor: colors.whatsapp },
-            headerTintColor: '#fff',
-            title: 'WhatsApp',
+            headerShown: false,
           }}
         />
         <Stack.Screen name="HoldAndDrag" component={HoldAndDrag} />
