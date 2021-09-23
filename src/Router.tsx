@@ -3,8 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types/RootNavigator';
 import { AnimationListing } from './AnimationListing';
-import { ToggleBar, CollapsibleHeader, HoldAndDrag } from './animations';
-import { colors } from './utils/Constant';
+import { ToggleBar, HoldAndDrag, CollapsibleHeader } from './animations';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

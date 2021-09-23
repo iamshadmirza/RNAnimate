@@ -2,4 +2,9 @@ const colors = {
   whatsapp: '#075e54',
 };
 
-export { colors };
+const size = {
+  headerHeight: 50,
+  tabBarHeight: 50,
+};
+
+export { colors, size };
