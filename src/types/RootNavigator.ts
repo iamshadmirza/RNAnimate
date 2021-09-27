@@ -3,4 +3,5 @@ export type RootStackParamList = {
   ToggleBar: undefined;
   CollapsibleHeader: undefined;
   HoldAndDrag: undefined;
+  CollapsibleTopBottomBar: undefined;
 };

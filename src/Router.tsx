@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types/RootNavigator';
 import { AnimationListing } from './AnimationListing';
 import { ToggleBar, HoldAndDrag, CollapsibleHeader } from './animations';
+import CollapsibleTopBottomBar from './animations/CollapsibleTopBottomBar';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -21,6 +22,7 @@ function Router(): JSX.Element {
           }}
         />
         <Stack.Screen name="HoldAndDrag" component={HoldAndDrag} />
+        <Stack.Screen name="CollapsibleTopBottomBar" component={CollapsibleTopBottomBar} />
       </Stack.Navigator>
     </NavigationContainer>
   );
