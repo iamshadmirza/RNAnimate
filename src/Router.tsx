@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types/RootNavigator';
 import { AnimationListing } from './AnimationListing';
-import { ToggleBar, HoldAndDrag, CollapsibleHeader } from './animations';
+import { ToggleBar, HoldAndDrag, CollapsibleHeader, CollapsibleHeaderREA2 } from './animations';
 import CollapsibleTopBottomBar from './animations/CollapsibleTopBottomBar';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -17,6 +17,13 @@ function Router(): JSX.Element {
         <Stack.Screen
           name="CollapsibleHeader"
           component={CollapsibleHeader}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="CollapsibleHeaderREA2"
+          component={CollapsibleHeaderREA2}
           options={{
             headerShown: false,
           }}

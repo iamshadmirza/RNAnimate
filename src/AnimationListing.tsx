@@ -21,7 +21,11 @@ const animations: Array<Animation> = [
   },
   {
     path: 'CollapsibleHeader',
-    title: 'Collapsible Header like Whatsapp',
+    title: 'Whatsapp Collapsible Header',
+  },
+  {
+    path: 'CollapsibleHeaderREA2',
+    title: 'Whatsapp Collapsible Header (REA2)',
   },
   {
     path: 'HoldAndDrag',
