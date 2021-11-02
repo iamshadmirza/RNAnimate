@@ -4,7 +4,7 @@ import faker from 'faker';
 import { useIsFocused } from '@react-navigation/core';
 import { size } from '../../utils/Constant';
 import ChatItem from './ChatItem';
-import { tabKeys } from './MainContainer';
+import { bottomTabKeys, topTabKeys } from '.';
 
 const dataArray = Array.from(Array(30)).map(() => ({
   key: faker.datatype.uuid(),
@@ -16,23 +16,30 @@ const TOTAL_OFFSET = size.headerHeight + size.tabBarHeight;
 
 type ScreenProps = {
   scrollY: Animated.Value;
-  trackRef: (key: tabKeys, ref: FlatList) => void;
-  tabKey: tabKeys;
-  setActiveTab: (key: tabKeys) => void;
+  trackRef: (key: `${bottomTabKeys}-${topTabKeys}`, ref: FlatList) => void;
+  topTabKey: topTabKeys;
+  bottomTabKey: bottomTabKeys;
+  setActiveTab: (key: topTabKeys) => void;
   syncScrollOffset: () => void;
 };
 
-const Screen = ({ scrollY, trackRef, tabKey, setActiveTab, syncScrollOffset }: ScreenProps): JSX.Element => {
+const Screen = ({
+  scrollY,
+  trackRef,
+  topTabKey,
+  bottomTabKey,
+  setActiveTab,
+  syncScrollOffset,
+}: ScreenProps): JSX.Element => {
   const isFocused = useIsFocused();
-
   React.useEffect(() => {
-    if (isFocused) setActiveTab(tabKey);
-  }, [isFocused, setActiveTab, tabKey]);
+    if (isFocused) setActiveTab(topTabKey);
+  }, [isFocused, setActiveTab, topTabKey]);
 
   return (
     <Animated.FlatList
       ref={(ref: FlatList) => {
-        trackRef(tabKey, ref);
+        trackRef(`${bottomTabKey}-${topTabKey}`, ref);
       }}
       contentContainerStyle={Platform.select({
         ios: { flexGrow: 1, paddingBottom: TOTAL_OFFSET },

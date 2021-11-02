@@ -8,6 +8,15 @@ interface HeaderProps extends BottomTabHeaderProps {
 }
 
 const AnimatedHeader = ({ scrollY }: HeaderProps): JSX.Element => {
+  React.useEffect(() => {
+    const listener = scrollY.addListener(({ value }) => {
+      console.log(`value`, value); // TODO: remove this
+    });
+    return () => {
+      scrollY.removeListener(listener);
+    };
+  }, [scrollY]);
+
   const clampedScrollY = scrollY.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],

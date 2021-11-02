@@ -1,127 +1,97 @@
+import { useIsFocused } from '@react-navigation/core';
 import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import React from 'react';
-import { Animated, FlatList, SafeAreaView, StatusBar, Platform } from 'react-native';
-import { colors, size } from '../../utils/Constant';
+import { Animated, FlatList } from 'react-native';
+import { bottomTabKeys, topTabKeys } from '.';
+import { size } from '../../utils/Constant';
 import AnimatedTabBarHeader from './AnimatedTabBarHeader';
 import Screen from './Screen';
 
-const tabs: Array<tabKeys> = ['chats', 'status', 'calls'];
-export type tabKeys = 'chats' | 'status' | 'calls';
-
 const Tab = createMaterialTopTabNavigator();
-
-export const CBTabViewOffset = Platform.OS === 'ios' ? -size.headerHeight : 0;
-
 type MainContainerProps = {
   scrollY: Animated.Value;
+  color: string;
+  bottomTabKey: bottomTabKeys;
+  setActiveBottomTab: (key: bottomTabKeys) => void;
+  setActiveTopTab: (key: topTabKeys) => void;
+  trackRef: (key: `${bottomTabKeys}-${topTabKeys}`, ref: FlatList) => void;
+  syncScrollOffset: () => void;
 };
 
-const MainContainer = ({ scrollY }: MainContainerProps): JSX.Element => {
-  // SYNC SCROLL OFFSET
-  const [activeTab, setActiveTab] = React.useState(tabs[0]);
-  const tabkeyToScrollableChildRef = React.useRef<{ [key: string]: FlatList }>({}).current;
-  const tabkeyToScrollPosition = React.useRef<{ [key: string]: number }>({}).current;
+const MainContainer = ({
+  scrollY,
+  color,
+  bottomTabKey,
+  setActiveBottomTab,
+  setActiveTopTab,
+  trackRef,
+  syncScrollOffset,
+}: MainContainerProps): JSX.Element => {
+  const isFocused = useIsFocused();
 
-  // hold ref to all scrollviews
-  const trackRef = (key: tabKeys, ref: FlatList) => {
-    tabkeyToScrollableChildRef[key] = ref;
-  };
-  // listen to global scrollY and track scroll positions of each scrollviews
   React.useEffect(() => {
-    const listener = scrollY.addListener(({ value }) => {
-      tabkeyToScrollPosition[activeTab] = value;
-    });
-    return () => {
-      scrollY.removeListener(listener);
-    };
-  });
-  // sync scroll offset when scroll ends
-  // scroll ends on onScrollEndDrag and onMomentumScrollEnd
-  const syncScrollOffset = () => {
-    const scrollValue = tabkeyToScrollPosition[activeTab];
-    Object.keys(tabkeyToScrollableChildRef).forEach(key => {
-      const scrollRef = tabkeyToScrollableChildRef[key];
-      if (!scrollRef || key === activeTab) {
-        return;
-      }
-
-      if (scrollValue <= CBTabViewOffset + size.headerHeight) {
-        /* header visible */
-        scrollRef.scrollToOffset({
-          offset: Math.max(Math.min(scrollValue, CBTabViewOffset + size.headerHeight), CBTabViewOffset),
-          animated: false,
-        });
-        tabkeyToScrollPosition[key] = scrollValue;
-      } else if (
-        tabkeyToScrollPosition[key] < CBTabViewOffset + size.headerHeight ||
-        tabkeyToScrollPosition[key] == null
-      ) {
-        /* header hidden */
-        scrollRef.scrollToOffset({
-          offset: CBTabViewOffset + size.headerHeight,
-          animated: false,
-        });
-        tabkeyToScrollPosition[key] = CBTabViewOffset + size.headerHeight;
-      }
-    });
-  };
+    if (isFocused) {
+      setActiveBottomTab(bottomTabKey);
+    }
+  }, [isFocused, setActiveBottomTab, bottomTabKey]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.whatsapp }}>
-      <StatusBar backgroundColor={colors.whatsapp} barStyle="light-content" />
-      <Tab.Navigator
-        tabBar={(props: MaterialTopTabBarProps) => <AnimatedTabBarHeader {...props} scrollY={scrollY} />}
-        screenOptions={{
-          tabBarActiveTintColor: '#fff',
-          tabBarItemStyle: {
-            backgroundColor: colors.whatsapp,
-            height: size.tabBarHeight,
-          },
-          tabBarLabelStyle: {
-            fontWeight: 'bold',
-          },
-          tabBarStyle: {
-            height: size.tabBarHeight,
-          },
-        }}>
-        <Tab.Screen name="Chats">
-          {props => (
-            <Screen
-              {...props}
-              tabKey={tabs[0]}
-              scrollY={scrollY}
-              trackRef={trackRef}
-              setActiveTab={setActiveTab}
-              syncScrollOffset={syncScrollOffset}
-            />
-          )}
-        </Tab.Screen>
-        <Tab.Screen name="Status">
-          {props => (
-            <Screen
-              {...props}
-              tabKey={tabs[1]}
-              scrollY={scrollY}
-              trackRef={trackRef}
-              setActiveTab={setActiveTab}
-              syncScrollOffset={syncScrollOffset}
-            />
-          )}
-        </Tab.Screen>
-        <Tab.Screen name="Calls">
-          {props => (
-            <Screen
-              {...props}
-              tabKey={tabs[2]}
-              scrollY={scrollY}
-              trackRef={trackRef}
-              setActiveTab={setActiveTab}
-              syncScrollOffset={syncScrollOffset}
-            />
-          )}
-        </Tab.Screen>
-      </Tab.Navigator>
-    </SafeAreaView>
+    <Tab.Navigator
+      tabBar={(props: MaterialTopTabBarProps) => <AnimatedTabBarHeader {...props} scrollY={scrollY} />}
+      screenOptions={{
+        tabBarBounces: false,
+        tabBarActiveTintColor: '#fff',
+        tabBarItemStyle: {
+          backgroundColor: color,
+          height: size.tabBarHeight,
+        },
+        tabBarLabelStyle: {
+          fontWeight: 'bold',
+        },
+        tabBarStyle: {
+          height: size.tabBarHeight,
+        },
+      }}>
+      <Tab.Screen name="Chats">
+        {props => (
+          <Screen
+            {...props}
+            topTabKey="chats"
+            bottomTabKey={bottomTabKey}
+            scrollY={scrollY}
+            trackRef={trackRef}
+            setActiveTab={setActiveTopTab}
+            syncScrollOffset={syncScrollOffset}
+          />
+        )}
+      </Tab.Screen>
+      <Tab.Screen name="Status">
+        {props => (
+          <Screen
+            {...props}
+            topTabKey="status"
+            bottomTabKey={bottomTabKey}
+            scrollY={scrollY}
+            trackRef={trackRef}
+            setActiveTab={setActiveTopTab}
+            syncScrollOffset={syncScrollOffset}
+          />
+        )}
+      </Tab.Screen>
+      <Tab.Screen name="Calls">
+        {props => (
+          <Screen
+            {...props}
+            topTabKey="calls"
+            bottomTabKey={bottomTabKey}
+            scrollY={scrollY}
+            trackRef={trackRef}
+            setActiveTab={setActiveTopTab}
+            syncScrollOffset={syncScrollOffset}
+          />
+        )}
+      </Tab.Screen>
+    </Tab.Navigator>
   );
 };
 
