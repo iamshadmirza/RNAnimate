@@ -4,7 +4,7 @@ const colors = {
 };
 
 const size = {
-  headerHeight: 50,
+  headerHeight: 120,
   tabBarHeight: 50,
 };
 

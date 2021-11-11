@@ -1,6 +1,7 @@
+import { useNavigation } from '@react-navigation/core';
 import { MaterialTopTabBar, MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import React from 'react';
-import { View, Text, Animated, StyleSheet } from 'react-native';
+import { Text, Animated, StyleSheet, Pressable, View } from 'react-native';
 import { colors, size } from '../../utils/Constant';
 
 interface HeaderProps extends MaterialTopTabBarProps {
@@ -19,10 +20,13 @@ const AnimatedHeader = ({ scrollY, ...props }: HeaderProps): JSX.Element => {
     outputRange: [0, -size.headerHeight],
     extrapolate: 'clamp',
   });
+  const navigation = useNavigation();
   return (
     <Animated.View style={[styles.header, { transform: [{ translateY }] }]}>
       <View style={styles.whatsappHeader}>
-        <Text style={styles.whatsappHeaderText}>WhatsApp</Text>
+        <Pressable onPress={() => navigation.goBack()}>
+          <Text style={styles.whatsappHeaderText}>WhatsApp</Text>
+        </Pressable>
       </View>
       <MaterialTopTabBar {...props} />
     </Animated.View>

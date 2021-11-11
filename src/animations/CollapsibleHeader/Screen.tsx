@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Platform, FlatList } from 'react-native';
+import { Animated, Platform, FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import faker from 'faker';
 import { useIsFocused } from '@react-navigation/core';
 import { size } from '../../utils/Constant';
@@ -19,7 +19,7 @@ type ScreenProps = {
   trackRef: (key: tabKeys, ref: FlatList) => void;
   tabKey: tabKeys;
   setActiveTab: (key: tabKeys) => void;
-  syncScrollOffset: () => void;
+  syncScrollOffset: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 };
 
 const Screen = ({ scrollY, trackRef, tabKey, setActiveTab, syncScrollOffset }: ScreenProps): JSX.Element => {
