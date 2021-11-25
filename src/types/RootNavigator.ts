@@ -5,4 +5,5 @@ export type RootStackParamList = {
   CollapsibleHeaderREA2: undefined;
   HoldAndDrag: undefined;
   CollapsibleTopBottomBar: undefined;
+  Bounce: undefined;
 };

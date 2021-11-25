@@ -35,6 +35,10 @@ const animations: Array<Animation> = [
     path: 'CollapsibleTopBottomBar',
     title: 'Collapsible Top and Bottom Bar',
   },
+  {
+    path: 'Bounce',
+    title: 'Bounce',
+  },
 ];
 
 export const AnimationListing = ({ navigation }: Props): JSX.Element => (
