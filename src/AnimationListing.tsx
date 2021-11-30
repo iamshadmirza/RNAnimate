@@ -24,10 +24,6 @@ const animations: Array<Animation> = [
     title: 'Whatsapp Collapsible Header',
   },
   {
-    path: 'CollapsibleHeaderREA2',
-    title: 'Whatsapp Collapsible Header (REA2)',
-  },
-  {
     path: 'HoldAndDrag',
     title: 'Draggable Head',
   },
