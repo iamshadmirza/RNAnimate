@@ -5,4 +5,5 @@ export type RootStackParamList = {
   HoldAndDrag: undefined;
   CollapsibleTopBottomBar: undefined;
   Bounce: undefined;
+  Tarot: undefined;
 };

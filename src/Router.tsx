@@ -6,6 +6,7 @@ import { AnimationListing } from './AnimationListing';
 import { ToggleBar, HoldAndDrag, CollapsibleHeader } from './animations';
 import CollapsibleTopBottomBar from './animations/CollapsibleTopBottomBar';
 import Bounce from './animations/Bounce';
+import { Tarot } from './animations/Tarot';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -25,6 +26,7 @@ function Router(): JSX.Element {
         <Stack.Screen name="HoldAndDrag" component={HoldAndDrag} />
         <Stack.Screen name="CollapsibleTopBottomBar" component={CollapsibleTopBottomBar} />
         <Stack.Screen name="Bounce" component={Bounce} />
+        <Stack.Screen name="Tarot" component={Tarot} />
       </Stack.Navigator>
     </NavigationContainer>
   );

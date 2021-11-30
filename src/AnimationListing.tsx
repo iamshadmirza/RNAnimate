@@ -35,6 +35,10 @@ const animations: Array<Animation> = [
     path: 'Bounce',
     title: 'Bounce',
   },
+  {
+    path: 'Tarot',
+    title: 'Tarot',
+  },
 ];
 
 export const AnimationListing = ({ navigation }: Props): JSX.Element => (
