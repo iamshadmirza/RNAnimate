@@ -15,7 +15,7 @@ const Bounce = (): JSX.Element => {
   });
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Pressable onPress={handleBounceEffect}>
+      <Pressable onPressIn={handleBounceEffect}>
         <Animated.View
           style={[
             {
