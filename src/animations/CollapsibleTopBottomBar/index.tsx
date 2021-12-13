@@ -13,7 +13,7 @@ const bottomTabs: Array<bottomTabKeys> = ['home', 'profile'];
 export type topTabKeys = 'chats' | 'status' | 'calls';
 const topTabs: Array<topTabKeys> = ['chats', 'status', 'calls'];
 
-const CBTabViewOffset = Platform.OS === 'ios' ? -size.headerHeight : 0;
+const CBTabViewOffset = Platform.OS === 'ios' ? -(size.headerHeight + size.tabBarHeight) : 0;
 
 const BottomTabs = createBottomTabNavigator();
 
