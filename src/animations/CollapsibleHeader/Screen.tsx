@@ -35,11 +35,11 @@ const Screen = ({ scrollY, trackRef, tabKey, setActiveTab, syncScrollOffset }: S
         trackRef(tabKey, ref);
       }}
       contentContainerStyle={Platform.select({
-        ios: { flexGrow: 1, paddingBottom: TOTAL_OFFSET },
+        ios: { flexGrow: 1, paddingBottom: size.tabBarHeight },
         android: {
           flexGrow: 1,
-          paddingTop: TOTAL_OFFSET,
-          paddingBottom: size.headerHeight,
+          paddingTop: size.headerHeight,
+          paddingBottom: size.tabBarHeight,
         },
       })}
       contentInset={Platform.select({ ios: { top: TOTAL_OFFSET } })}
