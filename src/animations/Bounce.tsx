@@ -1,12 +1,27 @@
 import React from 'react';
 import { View, Pressable } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withSpring,
+} from 'react-native-reanimated';
 import { colors } from '../utils/Constant';
 
 const Bounce = (): JSX.Element => {
   const scale = useSharedValue(1);
   const handleBounceEffect = () => {
-    scale.value = withSequence(withSpring(0.6), withSpring(1));
+    scale.value = withSequence(
+      withRepeat(
+        withSpring(0.5, {
+          stiffness: 90,
+        }),
+        2,
+        true,
+      ),
+      withSpring(1),
+    );
   };
   const styles = useAnimatedStyle(() => {
     return {
@@ -19,9 +34,9 @@ const Bounce = (): JSX.Element => {
         <Animated.View
           style={[
             {
-              width: 50,
+              width: 200,
               aspectRatio: 1,
-              borderRadius: 25,
+              borderRadius: 100,
               backgroundColor: colors.blue,
             },
             styles,
